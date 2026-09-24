@@ -1,7 +1,7 @@
 /* =========================================================
-   sound.js：効果音
-   Web Audio API を使って、音声ファイルなしでプログラムから音を作ります
-   ※ config.js の SOUND_ENABLED / SOUND_VOLUME を使うので、config.js の後に読み込みます
+    sound.js：効果音
+    Web Audio API を使って、音声ファイルなしでプログラムから音を作ります
+    ※ config.js の SOUND_ENABLED / SOUND_VOLUME を使うので、config.js の後に読み込みます
    ========================================================= */
 
 let audioCtx = null;    // 音を作るための「スタジオ」のようなもの
