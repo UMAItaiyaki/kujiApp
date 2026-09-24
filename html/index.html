@@ -76,11 +76,14 @@
   </div>
 </div>
 
+<!-- 溜め演出の「……！？」（ふだんは透明で見えない） -->
+<div id="tame" aria-hidden="true"><span>……！？</span></div>
 <div id="flash"></div>
 <canvas id="confetti"></canvas>
 
-<!-- 処理（JavaScript）：config.js → main.js の順番で読み込む -->
+<!-- 処理（JavaScript）：config.js → sound.js → main.js の順番で読み込む -->
 <script src="../js/config.js"></script>
+<script src="../js/sound.js"></script>
 <script src="../js/main.js"></script>
 </body>
 </html>

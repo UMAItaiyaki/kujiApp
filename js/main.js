@@ -118,6 +118,7 @@ function startDraw() {
   if (!prize) { renderRemaining(); return; }
 
   isDrawing = true;
+  initSound(); // 音の準備（ブラウザのルールで、ボタンを押したタイミングで行う必要がある）
 
   // ★ 演出の前に結果を確定して保存する
   //   （演出中にページを再読み込みされても、引き直しができないようにするため）
@@ -129,11 +130,26 @@ function startDraw() {
   btn.disabled = true;
   btn.textContent = "抽選中…";
 
+  // 溜め演出をするかどうか：A賞なら必ず、それ以外は GASE_RATE の確率で（ガセ演出）
+  const isTame = prize.id === "A" || Math.random() < GASE_RATE;
+  const spinMs = isTame ? TAME_SPIN_MS : SPIN_MS;
+
   // ガラポンを回す（クラスを付け直すとアニメーションが最初から再生される）
   const drum = $("#drum");
-  drum.classList.remove("spin");
+  drum.classList.remove("spin", "spin-tame");
   drum.getBoundingClientRect(); // ブラウザに一度描画させるおまじない
-  drum.classList.add("spin");
+  drum.style.animationDuration = spinMs + "ms"; // 回転時間を config.js の値に合わせる
+  drum.classList.add(isTame ? "spin-tame" : "spin");
+  playRattle(spinMs, isTame); // カラカラ音
+
+  // 溜めのときは、回転の途中から画面を暗くして「……！？」を出す
+  if (isTame) {
+    const tameStart = spinMs * 0.35;
+    setTimeout(() => {
+      $("#tame").classList.add("on");
+      playTameRise(spinMs - tameStart); // 緊張感を高める音
+    }, tameStart);
+  }
 
   // 玉の色をセット
   const ball = $("#ball");
@@ -141,8 +157,11 @@ function startDraw() {
   ball.style.background = ballStyle(prize.color);
 
   // 回り終わったら玉が転がる → そのあと結果表示
-  setTimeout(() => ball.classList.add("drop"), SPIN_MS);
-  setTimeout(() => showResult(prize), SPIN_MS + DROP_MS + 200);
+  setTimeout(() => {
+    ball.classList.add("drop");
+    playDrop(); // コロン
+  }, spinMs);
+  setTimeout(() => showResult(prize), spinMs + DROP_MS + 200);
 }
 
 function showResult(prize) {
@@ -152,7 +171,9 @@ function showResult(prize) {
   $("#resultName").textContent = prize.name;
   $("#resultMsg").textContent = prize.message;
   $("#resultOverlay").hidden = false;
+  $("#tame").classList.remove("on"); // 溜めの暗い画面を消す
   resultShownAt = Date.now();
+  playResult(prize.id); // 賞ごとの効果音
 
   // 賞ごとの演出
   if (prize.id === "A") {

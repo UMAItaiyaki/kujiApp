@@ -86,6 +86,7 @@ main {
 /* ガラポン */
 .stage {
   position: relative;
+  z-index: 11; /* 溜め演出で画面が暗くなっても、ガラポンだけは明るく見せる */
   width: min(88vw, 400px);
   aspect-ratio: 300 / 260;
 }
@@ -100,6 +101,40 @@ main {
 #drum { transform-origin: 50% 42.31%; }
 #drum.spin { animation: spin 2.4s cubic-bezier(.35, .1, .25, 1); }
 @keyframes spin { to { transform: rotate(1440deg); } }
+
+/* 溜めの回転：速く回る → ぐっとゆっくりに → 止まる直前に小刻みに揺れる */
+#drum.spin-tame { animation: spin-tame 4.5s linear; }
+@keyframes spin-tame {
+  0%   { transform: rotate(0deg);    animation-timing-function: cubic-bezier(.35, .1, .5, 1); }
+  60%  { transform: rotate(1620deg); animation-timing-function: cubic-bezier(.2, .5, .5, 1); }
+  84%  { transform: rotate(1770deg); }
+  88%  { transform: rotate(1764deg); }
+  92%  { transform: rotate(1778deg); }
+  96%  { transform: rotate(1772deg); }
+  100% { transform: rotate(1800deg); }
+}
+
+/* 溜め演出：画面を暗くして「……！？」を出す */
+#tame {
+  position: fixed; inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding-top: 8vh;
+  background: rgba(20, 10, 0, .5);
+  opacity: 0;
+  transition: opacity .6s;
+}
+#tame.on { opacity: 1; }
+#tame span {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 16px var(--kin), 0 4px 0 var(--beni);
+  animation: tame-text .7s ease-in-out infinite alternate;
+}
+@keyframes tame-text { from { transform: scale(1); } to { transform: scale(1.12); } }
 
 /* 出てくる玉 */
 #ball {
@@ -235,6 +270,7 @@ main {
 
 /* 動きを減らす設定の人への配慮 */
 @media (prefers-reduced-motion: reduce) {
-  #drum.spin { animation-duration: .8s; }
+  #drum.spin, #drum.spin-tame { animation-duration: .8s !important; }
+  #tame span { animation: none; }
   .result-card.rank-A { animation: pop .3s; }
 }

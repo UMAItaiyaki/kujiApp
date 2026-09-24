@@ -2,9 +2,9 @@
   <!-- ガラポンの回る部分（ドラム・ハンドル）。回転の中心は(150,110) -->
   <g>
     <polygon points="224,141 181,184 119,184 76,141 76,79 119,36 181,36 224,79"
-              fill="#8a5a2b" stroke="#4a2a10" stroke-width="5"/>
+             fill="#8a5a2b" stroke="#4a2a10" stroke-width="5"/>
     <polygon points="209,135 175,169 125,169 91,135 91,85 125,51 175,51 209,85"
-              fill="#b07a3f" stroke="#5a3418" stroke-width="3"/>
+             fill="#b07a3f" stroke="#5a3418" stroke-width="3"/>
     <g stroke="#5a3418" stroke-width="2">
       <line x1="150" y1="110" x2="209" y2="135"/><line x1="150" y1="110" x2="175" y2="169"/>
       <line x1="150" y1="110" x2="125" y2="169"/><line x1="150" y1="110" x2="91" y2="135"/>
