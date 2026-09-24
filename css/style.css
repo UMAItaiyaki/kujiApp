@@ -175,7 +175,7 @@ main {
 
 /* 管理画面を開くボタン（目立たないように右下に配置） */
 #adminBtn {
-  position: fixed; right: 10px; bottom: 10px;
+  position: fixed; right: 20px; bottom: 20px;
   width: 36px; height: 36px;
   border: none; border-radius: 50%;
   background: rgba(0,0,0,.06); color: #aaa;
